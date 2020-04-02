@@ -20,6 +20,16 @@ namespace BookAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy("allowAll", builder =>
+				{
+					builder.AllowAnyOrigin();
+					builder.AllowAnyHeader();
+					builder.AllowAnyMethod();
+				});
+			});
+
 			services.AddControllers()
 				.AddNewtonsoftJson(options =>
 					options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -43,18 +53,15 @@ namespace BookAPI
 			}
 
 			app.UseHttpsRedirection();
-
 			app.UseRouting();
-
+			app.UseCors();
 			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
+				endpoints.MapControllers().RequireCors("allowAll");
 			});
 
 			app.UseSwagger();
-
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book API V1");

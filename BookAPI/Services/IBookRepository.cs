@@ -6,9 +6,9 @@ namespace BookAPI.Services
 	public interface IBookRepository
 	{
 		Task<Book> GetAllBooks();
-		Task<Book> GetBook(string isbn);
+		Task<Book> GetBook(string id);
 		Task CreateBook(Book book);
-		Task UpdateBook(string isbn, Book book);
-		Task Delete(string isbn);
+		Task UpdateBook(string id, Book book);
+		Task Delete(string id);
 	}
 }

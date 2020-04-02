@@ -10,7 +10,7 @@ namespace BookAPI.Services
 			throw new System.NotImplementedException();
 		}
 
-		public Task<Book> GetBook(string isbn)
+		public Task<Book> GetBook(string id)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -20,12 +20,12 @@ namespace BookAPI.Services
 			throw new System.NotImplementedException();
 		}
 
-		public Task UpdateBook(string isbn, Book book)
+		public Task UpdateBook(string id, Book book)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public Task Delete(string isbn)
+		public Task Delete(string id)
 		{
 			throw new System.NotImplementedException();
 		}
