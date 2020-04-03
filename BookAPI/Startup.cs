@@ -1,12 +1,12 @@
-using BookAPI.Services;
+﻿using BookAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace BookAPI
+namespace BookApi
 {
 	public class Startup
 	{
@@ -30,42 +30,37 @@ namespace BookAPI
 				});
 			});
 
-			services.AddControllers()
-				.AddNewtonsoftJson(options =>
-					options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-				);
-			services.AddMvc();
-
-			services.AddSingleton<IBookRepository, BookRepository>();
+			services.AddScoped<IBookRepository, BookRepository>();
 
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 			});
+
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
-			app.UseHttpsRedirection();
-			app.UseRouting();
-			app.UseCors();
-			app.UseAuthorization();
-			app.UseEndpoints(endpoints =>
+			else
 			{
-				endpoints.MapControllers().RequireCors("allowAll");
-			});
+				app.UseHsts();
+			}
+
+			app.UseCors("allowAll");
 
 			app.UseSwagger();
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book API V1");
 			});
+
+			app.UseMvc();
 		}
 	}
 }

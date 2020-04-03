@@ -8,7 +8,7 @@ import './App.css';
         books: []
       }
       componentDidMount() {
-        fetch('https://localhost:44311/api/book')
+        fetch("http://localhost:8080/api/book")
         .then(res => res.json())
         .then((data) => {
           this.setState({ books: data })

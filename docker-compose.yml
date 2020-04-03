@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  back:
+    image: examplebackend:0.6
+    build: ./BookAPI
+    ports:
+      - "8080:80"
+    networks: 
+      - frontnetwork
+  front:
+    image: examplefrontend:0.7
+    build: ./book_spa
+    volumes:
+      - ./book_spa:/app
+    ports:
+      - "3001:3000"
+    networks: 
+      - frontnetwork
+
+networks: 
+  frontnetwork:
