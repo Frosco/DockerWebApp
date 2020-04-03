@@ -2,12 +2,15 @@ version: "3.7"
 
 services:
   back:
-    image: examplebackend:0.6
+    image: examplebackend:0.8
     build: ./BookAPI
     ports:
       - "8080:80"
+    depends_on: 
+      - db
     networks: 
       - frontnetwork
+      - dbnetwork
   front:
     image: examplefrontend:0.7
     build: ./book_spa
@@ -17,6 +20,15 @@ services:
       - "3001:3000"
     networks: 
       - frontnetwork
+  db:
+    image: mongo:4.2.5
+    restart: always
+    command: mongod --noauth
+    ports: 
+      - 27017:27017
+    networks: 
+      - dbnetwork
 
 networks: 
   frontnetwork:
+  dbnetwork:

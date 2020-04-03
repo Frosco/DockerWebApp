@@ -1,9 +1,11 @@
-﻿using BookAPI.Services;
+﻿using BookAPI.Models;
+using BookAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace BookApi
@@ -30,7 +32,13 @@ namespace BookApi
 				});
 			});
 
-			services.AddScoped<IBookRepository, BookRepository>();
+			services.AddSingleton<IBookRepository, BookRepository>();
+
+			services.Configure<BookstoreDatabaseSettings>(
+				Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
+
+			services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
+				sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
 			services.AddSwaggerGen(c =>
 			{

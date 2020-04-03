@@ -21,28 +21,8 @@ namespace BookAPI.Controllers
 		[HttpGet]
 		public ActionResult<IEnumerable<Book>> Get()
 		{
-			//var books = await _bookRepository.GetAllBooks();
-			var books = new List<Book>
-			{
-				new Book
-				{
-					Author = "Astrid Lindgren",
-					Publisher = "Rabén Sjögren",
-					Title = "Här kommer Pippi Långstrump"
-				},
-				new Book
-				{
-					Author = "Michael Ende",
-					Title = "Die unendliche Geschichte",
-					Publisher = "K. Thienemanns Verlag"
-				},
-				new Book
-				{
-					Author = "Thorbjørn Egner",
-					Title = "Folk og røvere i Kardemomme by",
-					Publisher = "Cappelen"
-				}
-			};
+			var books = _bookRepository.GetAllBooks();
+			
 			return Ok(books);
 		}
 
@@ -51,7 +31,6 @@ namespace BookAPI.Controllers
 		public async Task<ActionResult<Book>> Get(string id)
 		{
 			return Ok(await _bookRepository.GetBook(id));
-			;
 		}
 
 		// POST: api/Book
